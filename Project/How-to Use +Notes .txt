@@ -1,0 +1,6 @@
+A simple manual how to run the project:
+
+    •You Should run the OsMain. java in the osMain package as it contains the Driver for other classes in the project packages.
+    •You should include RXTX and Jcomm library files for the IO package to run, these .jar files are located in "Important Libraries" Folder 
+       - You should use JDK8.x in order to run the project properly. 
+        

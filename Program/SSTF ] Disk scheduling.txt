@@ -1,0 +1,38 @@
+
+
+
+import java.util.Scanner;
+import java.util.ArrayList;
+
+public class Disk_SSTF
+{
+  public static void main(String[] args)
+  {
+    int headPos = Integer.parseInt(args[0]);   	// starting head position
+
+    Scanner input = new Scanner(System.in);    	// read cylinder requests
+    ArrayList<Integer> requests = new ArrayList<Integer>();
+    while (input.hasNextInt())
+      requests.add(new Integer(input.nextInt()));
+
+    int scheduleCost = 0;                       
+    System.out.print(headPos);
+    while (requests.size() > 0)                	// SSTF implementation
+    {
+      int closestPos = 0;
+      for (int j=1; j<requests.size(); j++)     // find next closest position
+        if (Math.abs(headPos - requests.get(j).intValue()) < 
+            Math.abs(headPos - requests.get(closestPos).intValue()))
+          closestPos = j;                       // closest position index
+
+      scheduleCost += Math.abs(headPos - requests.get(closestPos).intValue());
+      headPos = requests.get(closestPos).intValue(); // reposition the head
+     
+      System.out.print(" - " + headPos); 
+      requests.remove(closestPos);              // remove processed request
+    }
+
+    System.out.println("\n" + scheduleCost + " cylinder moves");
+  }
+}
+

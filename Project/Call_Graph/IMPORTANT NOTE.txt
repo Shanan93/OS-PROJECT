@@ -1,0 +1,2 @@
+ Note that in order to show the call graph you should go to : project_folder -> html -> index.html 
+you can then navigate between call graphs of main function,classes ..etc using the static website from your favorite web browser  

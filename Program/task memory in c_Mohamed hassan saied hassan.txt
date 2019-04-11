@@ -1,0 +1,51 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+
+char name[100],*description;
+
+strcpy(name, "Reham Khalf"); 
+
+description = malloc( 30 * sizeof(char) );
+
+if( description == NULL ) 
+ 
+ {
+
+     fprintf(stderr, "Error");
+
+   }
+
+
+   else 
+      {
+     
+         strcpy( description, "Reham Khalaf a Computer engineer student");
+
+
+       }
+  
+ description = realloc( description, 100 * sizeof(char) );
+
+
+   if( description == NULL )
+
+   {
+      fprintf(stderr, "Error");
+    }
+
+   else
+
+      {
+
+      strcat( description, "She is in class 10th");
+       
+      }
+   
+   printf("Name = %s\n", name );
+   printf("description: %s\n", description );
+   free(description);
+}

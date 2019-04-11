@@ -1,0 +1,101 @@
+// demo for the disk SSTF scheduling
+
+import java.util.Scanner;
+import java.util.ArrayList;
+
+public class Disk_SSTF
+{
+  public static void main(String[] args)
+  {
+    int headPos = Integer.parseInt(args[0]);   	// starting head position
+
+    Scanner input = new Scanner(System.in);    	// read cylinder requests
+    ArrayList<Integer> requests = new ArrayList<Integer>();
+    while (input.hasNextInt())
+      requests.add(new Integer(input.nextInt()));
+
+    int scheduleCost = 0;                       
+    System.out.print(headPos);
+    while (requests.size() > 0)                	// SSTF implementation
+    {
+      int closestPos = 0;
+      for (int j=1; j<requests.size(); j++)     // find next closest position
+        if (Math.abs(headPos - requests.get(j).intValue()) < 
+            Math.abs(headPos - requests.get(closestPos).intValue()))
+          closestPos = j;                       // closest position index
+
+      scheduleCost += Math.abs(headPos - requests.get(closestPos).intValue());
+      headPos = requests.get(closestPos).intValue(); // reposition the head
+     
+      System.out.print(" - " + headPos); 
+      requests.remove(closestPos);              // remove processed request
+    }
+
+    System.out.println("\n" + scheduleCost + " cylinder moves");
+  }
+}
+======================================================================
+SSTF (Shortest Seek Time First) Disk Scheduling Algorithm with Java 
+
+
+
+class SSTF implements DiskScheduler{
+    int[] queue;
+    int initialCylinder;
+   
+ public SSTF(int[] queue, int initialCylinder){
+        this.queue = queue;
+        this.initialCylinder = initialCylinder;
+    }
+
+    public int serviceRequests(){
+        int headMovement = 0;
+        int prev = initialCylinder;
+        int [] rpath = path();
+        for (int i=0; i < rpath.length; i++) {
+            headMovement += Math.abs(rpath[i]-prev);
+            prev = rpath[i];
+        }
+        return headMovement;
+    }
+    
+    public int[] path(){
+       int [] resultPath = new int[queue.length];
+       int now = initialCylinder;
+       int [] requests = new int[queue.length];
+       for (int i = 0; i < queue.length; i++){
+        requests[i] = queue[i];
+    }
+        for (int i = 0; i < resultPath.length; i++){
+        int closest = closest(now, requests);
+        resultPath[i] = closest;
+        now = closest;
+    }
+       return resultPath; 
+    }
+    
+    int closest(int k, int[] requests){
+        int min = 5000000;
+        int minPos = -1;
+         for (int i = 0; i < requests.length; i++){
+            if (requests[i] == -1) continue;
+            else if  (Math.abs(k-queue[i]) < min) {
+                minPos = i;
+                min = Math.abs(k-queue[i++]);            
+            }
+        }
+        int nearestCylinder = requests[minPos];
+        requests[minPos] = -1;
+        return nearestCylinder;
+    }
+    
+    public void println(){
+    System.out.println("SSTF head movement = " + serviceRequests());
+        
+        System.out.print("SSTF Path = ");
+        for(int i: path()){
+            System.out.print(i + " ");  
+        }
+        System.out.println("");
+}
+}
